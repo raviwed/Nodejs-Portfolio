@@ -10,6 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express.js": "^1.0.0"
+    "express": "^5.2.1"
   }
 }
