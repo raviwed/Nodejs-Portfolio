@@ -1,12 +1,35 @@
 // const http= require("http")
 const express=  require("express")
 const app= express();
+const users=require("./MOCK_DATA.json")
 app.get("/",(req, res)=>{
     return res.send("Hello From Home Page")
 })
 app.get("/about",(req, res)=>{
     return res.send("Hello From about Page"+" hey "+ req.query.name +" you are age " + req.query.age)
 })
+app.get("/setup",(req,res)=>{
+    return res.json(users)
+})
+
+app.get("/setup/:userId",(req, res)=>{
+   const data=Number(req.params.userId)
+    const value = users.filter((el)=>el.id===data)
+    return res.json(value)
+})
+
+app.post("api/users",(req, res)=>{
+   return res.json({status:"pending"});
+})
+
+app.patch("api/users/:id",(req,res)=>{
+    return res.json({status:"pending"});
+})
+
+app.delete("api/users/:id",(req,res)=>{
+  return res.json({status:"pending"});
+})
+
 
 app.listen(8000,()=>console.log("serverStarted"))
 // const myServer=http.createServer(app);
