@@ -8,7 +8,7 @@ Applications 8:30 referesh Naukari  apply for the React-native, React.js applica
 4) looking in to topics of (Learn depth )
 5) exigustional context , Prototype Topic and any onther intersing topicfrom  (namasth javascript )
 
-from 1:30pm  to DSA 5 pm
+from 2pm  to DSA 5 pm
  topics to be covered 
  1) merge sort (under stand the logic and implementation)
  2) quick sort (this need to understood to implement in the Geeks for geeks platform)
@@ -17,6 +17,6 @@ from 1:30pm  to DSA 5 pm
   search algorithms 
    1)linear saerch 
    2) binary search
-
+   3) Bidirectional Search
    7:30 pm to till sleep  (node.js ts)
 
