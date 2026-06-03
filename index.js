@@ -32,14 +32,38 @@ app.post("/api/users", (req, res) => {
 })
 
 app.patch("/api/users/:id", (req, res) => {
+    const query = Number(req.params.id)
+    const updatedFeilds = req.body;
+    const userIndex = users.findIndex((user) => user.id === query)
+    users[userIndex] = {
+        ...users[userIndex],
+        ...updatedFeilds,
+    };
 
+    fs.writeFile("./MOCK_DATA.json", JSON.stringify(users, null, 2), (req, res) => {
+        return res.json({ status: "SucessFull" })
+    })
     return res.json({ status: "pending" });
 })
 
+app.put("/api/userput/:id", (req, res) => {
+      const query = Number(req.params.id)
+    const updatedFeilds = req.body;
+    const userIndex = users.findIndex((user) => user.id === query)
+    users[userIndex] = {
+           id,
+        ...updatedFeilds,
+    };
+
+    fs.writeFile("./MOCK_DATA.json", JSON.stringify(users, null, 2), (req, res) => {
+        return res.json({ status: "SucessFull" })
+    })
+    return res.json({ status: "pending" });
+})
 app.delete("/api/users/:id", (req, res) => {
     const query = Number(req.params.id)
     const userExists = users.some((user) => user.id === query);
-    
+
     if (!userExists) {
         return res.status(404).json({
             status: "error",
