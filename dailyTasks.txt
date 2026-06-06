@@ -23,3 +23,6 @@ from 2pm  to DSA 5 pm
 
 DSA Docs //------>
 https://docs.google.com/document/d/13QHudV9u5DBeCrcP7GbzFDDlmpPmla7n8v_YUIt31fY/edit?usp=sharing
+
+mongoDb running command
+& "C:\Users\Admin\Downloads\mongosh-2.8.3-win32-x64\mongosh-2.8.3-win32-x64\bin\mongosh.exe"
