@@ -1,4 +1,5 @@
 const { User } = require("../models/user")
+
 async function handleGetAllUsers(req, res) {
     const allDbUser = await User.find({})
     return res.json(allDbUser);
@@ -49,7 +50,7 @@ async function handlePutRequest(req, res) {
 async function handleDelete(req, res) {
 
     const query = req.params.id
-
+    
     const update = await User.findByIdAndDelete(query)
 
     return res.json({ status: "pending" });
