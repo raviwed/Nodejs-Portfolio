@@ -46,12 +46,19 @@ async function handlePutRequest(req, res) {
     return res.json({ status: "pending" });
 }
 
-async function handleDelete(req, res){
-    
+async function handleDelete(req, res) {
+
     const query = req.params.id
 
     const update = await User.findByIdAndDelete(query)
 
     return res.json({ status: "pending" });
 }
-module.exports = { handleGetAllUsers, handleGetUserById, handlePostUserById, handlePatchById, handlePutRequest, handleDelete }
+module.exports = {
+    handleGetAllUsers,
+    handleGetUserById,
+    handlePostUserById,
+    handlePatchById,
+    handlePutRequest,
+    handleDelete
+}

@@ -16,7 +16,6 @@ app.use(logReqResponds("log.txt"))
 app.use(express.urlencoded({ extended: false }))
 //Routes
 
-
 app.use('/api/users',userRouter)
 app.listen(8000, () => console.log("serverStarted"))
 // const myServer=http.createServer(app);
