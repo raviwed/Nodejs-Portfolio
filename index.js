@@ -6,6 +6,7 @@ const { mongoDbconnect } = require("./controllers")
 const { logReqResponds } = require('./middlewares/user')
 const app = express();
 const { User } = require("./models/user")
+// const cookieparser = require("cookie-parser")
 
 //----->Routes Start----->
 const userRouter = require("./routes/user")
@@ -19,9 +20,11 @@ app.use(express.json())
 app.use(logReqResponds("log.txt"))
 //-----> middleWare End ----> plugin
 app.use(express.urlencoded({ extended: false }))
+// app.use(cookieparser())
 //<----- Routes Start ---->
 app.use('/api/authUser', authUserRouter)
 app.use('/api/users', userRouter)
+// app.use(cookies)
 //<----- Routes End ----->
 app.listen(8000, () => console.log("serverStarted"))
 // const myServer=http.createServer(app);

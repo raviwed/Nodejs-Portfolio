@@ -1,6 +1,7 @@
 const { authUser } = require("../models/authUser");
 const { User } = require("../models/user");
-
+// const { v4: uuidv4 } = require("uuid")
+const { setUser } = require("../services/authUser")
 
 async function handleAuthUserSignUp(req, res) {
     const body = req.body
@@ -13,6 +14,7 @@ async function handleAuthUserSignUp(req, res) {
 }
 
 async function handleAuthLoginUser(req, res) {
+    const { v4: uuidv4 } = await import("uuid");
     try {
         const { email, password } = req.body;
         const user = await authUser.findOne({ email, password })
@@ -22,7 +24,10 @@ async function handleAuthLoginUser(req, res) {
                 msg: "Invalid email or password"
             });
         }
-        
+
+        const sessionId = uuidv4()
+        setUser(sessionId)
+        res.cookie('uuid', sessionId)
         return res.status(200).json({
             msg: "Login successful",
             user
