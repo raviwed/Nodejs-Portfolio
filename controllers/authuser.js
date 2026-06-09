@@ -1,6 +1,5 @@
 const { authUser } = require("../models/authUser");
 const { User } = require("../models/user");
-// const { v4: uuidv4 } = require("uuid")
 const { setUser } = require("../services/authUser")
 
 async function handleAuthUserSignUp(req, res) {
@@ -24,10 +23,9 @@ async function handleAuthLoginUser(req, res) {
                 msg: "Invalid email or password"
             });
         }
-
-        const sessionId = uuidv4()
-        setUser(sessionId)
-        res.cookie('uuid', sessionId)
+        const token = setUser(user)
+        setUser(user)
+        res.cookie('uuid', token)
         return res.status(200).json({
             msg: "Login successful",
             user
