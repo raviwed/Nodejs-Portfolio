@@ -1,31 +1,33 @@
-// const http= require("http")
-const fs = require("fs/promises")
-const express = require("express")
-// const mongoose = require("mongoose")
-const { mongoDbconnect } = require("./controllers")
-const { logReqResponds } = require('./middlewares/user')
-const app = express();
-const { User } = require("./models/user")
-// const cookieparser = require("cookie-parser")
+require("dotenv").config();
+const { Client, GatewayIntentBits } = require('discord.js');
 
-//----->Routes Start----->
-const userRouter = require("./routes/user")
-const authUserRouter= require("./routes/authuser")
-//----->Routes End ---->
-const users = require("./MOCK_DATA.json");
-mongoDbconnect("mongodb://127.0.0.1:27017/Authuser")
 
-//----> middleWare Start --> plugin
-app.use(express.json())
-app.use(logReqResponds("log.txt"))
-//-----> middleWare End ----> plugin
-app.use(express.urlencoded({ extended: false }))
-// app.use(cookieparser())
-//<----- Routes Start ---->
-app.use('/api/authUser', authUserRouter)
-app.use('/api/users', userRouter)
-// app.use(cookies)
-//<----- Routes End ----->
-app.listen(8000, () => console.log("serverStarted"))
-// const myServer=http.createServer(app);
-// myServer.listen(8000,()=>console.log('Server Started'))
+const client = new Client({
+    intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.MessageContent
+    ]
+});
+
+// <----- messageCreate  Creation --->
+client.on("messageCreate", (message) => {
+    if (message.author.bot) return;
+    if (message.content.startsWith("content")) {
+        const url = message.content.split("content")[1];
+        return message.reply({
+            content: "Genearting Short ID for" + url
+        })
+    }
+    message.reply({
+        content: "Hi From Bot Babi",
+    })
+    console.log(message.content);
+})
+
+//------> Bot Command for InteractionsCreate ----
+client.on("interactionCreate", (interaction) => {
+    console.log(interaction)
+    interaction.reply("Pong!!")
+})
+client.login(process.env.DISCORD_TOKEN);
