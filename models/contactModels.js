@@ -1,6 +1,11 @@
 const mongoose = require("mongoose");
 
 const constantSchema = mongoose.Schema({
+    user_id: {
+        type: mongoose.Schema.ObjectId,
+        required: true,
+        ref:"User"
+    },
     name: {
         type: String,
         required: [true, "Please add the contact name"],
@@ -13,6 +18,10 @@ const constantSchema = mongoose.Schema({
         type: Number,
         required: [true, "Please add the phone number "]
     },
+    password: {
+        type: String,
+        required: [true, "Please give  your password"]
+    }
 
 },
     {
