@@ -9,15 +9,12 @@ const jwt = require("jsonwebtoken")
 const getContact = asyncHandler(async (req, res) => {
     const contacts = await Contact.find()
     res.status(200).json(contacts)
-    res.send("Hello")
 })
 
 
 
 const postNewContact = asyncHandler(async (req, res) => {
     const { name, email, phone, password } = req.body
-
-    console.log(name, email, phone, password)
 
     if (!name || !email || !phone || !password) {
         res.status(400)
@@ -30,7 +27,7 @@ const postNewContact = asyncHandler(async (req, res) => {
         throw new Error("User already registered")
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10)
+    const hashedPassword = await bcrypt.hash(password, 8)
     //  console.log(hashedPassword,"<---hashedpassword--->")
     const contacts = await Contact.create({
         name,
@@ -57,18 +54,16 @@ const loginUser = asyncHandler(async (req, res) => {
                 user: {
                     name: user.name,
                     email: user.email,
-                    password: user._id
+                    id: user._id
                 }
             },
             "Raviteja@9908",
             { expiresIn: "15m" }
         )
         res.status(200).json({accessToken})
-        res.send({ message: "this password is valid" })
     } else {
         res.status(401)
         throw new Error("Password Error")
-        res.send({ message: "this is Invalid password" })
     }
 })
 

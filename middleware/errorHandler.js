@@ -1,48 +1,45 @@
 const { constants } = require("../constants");
 const errorHandler = (err, req, res, next) => {
-    const statusCode = res.statusCode ? res.statusCode : 500;
+    const statusCode = err.statusCode || err.status || (res.statusCode !== 200 ? res.statusCode : 500);
+    let title = "SERVER_ERROR";
+    let message = err.message;
+
+    if (err instanceof SyntaxError && err.type === "entity.parse.failed") {
+        title = "Invalid JSON";
+        message = "Request body is not valid JSON. Send raw JSON without extra quotes.";
+        return res.status(400).json({
+            title,
+            message
+        });
+    }
+
     switch (statusCode) {
         case constants.VALIDATION_ERROR:
-            res.json({
-                tittle: "Validation Failed",
-                message: err.message,
-                stackTrace: err.stack
-            });
+            title = "Validation Failed";
             break;
         case constants.UNAUTHORIZED:
-            res.json({
-                tittle: "Not Found",
-                message: err.message,
-                stackTrace: err.stack
-            });
+            title = "Unauthorized";
             break;
         case constants.FORBIDDEN:
-            res.json({
-                tittle: "FORBIDDEN",
-                message: err.message,
-                stackTrace: err.stack
-            });
+            title = "FORBIDDEN";
             break;
 
         case constants.NOT_FOUND:
-            res.json({
-                tittle: "NOT_FOUND",
-                message: err.message,
-                stackTrace: err.stack
-            });
+            title = "NOT_FOUND";
             break;
         case constants.SERVER_ERROR:
-            res.json({
-                tittle: "SERVER_ERROR",
-                message: err.message,
-                stackTrace: err.stack
-            });
+            title = "SERVER_ERROR";
             break;
         default:
-            console.log("NO Error, All good");
+            title = "Error";
             break;
     }
 
+    res.status(statusCode).json({
+        title,
+        message: err.message,
+        stackTrace: err.stack
+    });
 }
 
 module.exports = errorHandler;

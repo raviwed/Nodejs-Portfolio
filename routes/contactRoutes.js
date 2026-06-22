@@ -3,15 +3,13 @@ const { getContact, postNewContact, singleUserGet, updateSingleData, deleteSingl
 const { ValidateToken } = require("../middleware/validationHandler");
 const router = express.Router();
 
-router.use(ValidateToken)
-
 router.route('/').get(getContact).post(postNewContact)
 
 router.route("/login").post(loginUser)
 
-router.route("/current").get(ValidateToken, currentUser) 
+router.route("/current").get(ValidateToken, currentUser)
 
-router.route('/:id').get(singleUserGet).put(updateSingleData).delete(deleteSingleData).patch(PatchDataRequest)
+router.route('/:id').get(ValidateToken, singleUserGet).put(ValidateToken, updateSingleData).delete(ValidateToken, deleteSingleData).patch(ValidateToken, PatchDataRequest)
 
 
 
