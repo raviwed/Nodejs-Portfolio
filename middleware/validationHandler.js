@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken")
 const ValidateToken = (req, res, next) => {
     const authHeader = req.headers.authorization;
 
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    if (!authHeader || !authHeader.startsWith("Bearer")) {
         res.status(401);
         throw new Error("User is not authorized");
     }
