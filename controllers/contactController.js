@@ -60,7 +60,7 @@ const loginUser = asyncHandler(async (req, res) => {
             "Raviteja@9908",
             { expiresIn: "15m" }
         )
-        res.status(200).json({accessToken})
+        res.status(200).json({ accessToken })
     } else {
         res.status(401)
         throw new Error("Password Error")
@@ -77,7 +77,15 @@ const updateSingleData = asyncHandler(async (req, res) => {
 })
 
 const deleteSingleData = asyncHandler(async (req, res) => {
-    res.send("Hello Delete Data")
+    let userId = req.params.id;
+    const deleteUser = await Contact.findByIdAndDelete(userId);
+    if (deleteUser) {
+        res.status(400).json("This Id is In valid")
+        throw new Error("This id Don't extist in")
+    }
+    res.status(202).json("SucessFully Deleted")
+
+
 });
 
 const PatchDataRequest = asyncHandler(async (req, res) => {
