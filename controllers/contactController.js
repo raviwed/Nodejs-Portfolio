@@ -14,9 +14,9 @@ const getContact = asyncHandler(async (req, res) => {
 
 
 const postNewContact = asyncHandler(async (req, res) => {
-    const { name, email, phone, password } = req.body
+    const { user_id,name, email, phone, password } = req.body
 
-    if (!name || !email || !phone || !password) {
+    if (!user_id||!name || !email || !phone || !password) {
         res.status(400)
         throw new Error("All feilds are mandatory !")
     }
@@ -30,6 +30,7 @@ const postNewContact = asyncHandler(async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 8)
     //  console.log(hashedPassword,"<---hashedpassword--->")
     const contacts = await Contact.create({
+        user_id,
         name,
         email,
         phone,
@@ -69,11 +70,22 @@ const loginUser = asyncHandler(async (req, res) => {
 
 
 const singleUserGet = asyncHandler(async (req, res) => {
-    res.send("Hello singleData")
+    let userId = req.params.id;
+    const getSingleData = await Contact.findById(userId)
+     if(!getSingleData){
+      return  res.status(400).json("Invalid Id you have given ")
+     }
+   return res. status(200).send(getSingleData)
 })
 
 const updateSingleData = asyncHandler(async (req, res) => {
-    res.send("Hello Put Data")
+    const userId=req.params.id;
+    const body=req.body;
+    const updatePostReq = await Contact.findByIdAndUpdate(userId, body);
+    if(!updatePostReq){
+        res.status(400).json("Some  thing When wrong")
+    }
+    res.status(202).send("Hello Put Data")
 })
 
 const deleteSingleData = asyncHandler(async (req, res) => {
