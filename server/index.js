@@ -25,21 +25,13 @@ io.on("connection",(socket)=>{
   console.log("Id",socket.id)
   socket.emit("welcome",`welcome to the server`)
   socket.broadcast.emit("welcome",`Welcome to sever,${socket.id}`)
-  socket.on("message",({room,message})=>{
-    console.log("message Value",{room,message});
+  socket.on("message",(message)=>{
+    console.log("message Value",message);
     socket.broadcast.emit("receive-message",message)
-    // io.emit("message",data);
   })
-  socket.on("disconnect",(data)=>{
-    console.log(data)
-    io.emit("receive-message",data);
+  socket.on("disconnect",(reason)=>{
+    console.log("User disconnected", socket.id, reason)
   })
-  socket.on("receive-message",(data)=>{
-    console.log("receive-message",data)
-  })
-  return ()=>{
-   socket.disconnect();
-  }
 })
 
 // app.get("/",(req,res)=>{
