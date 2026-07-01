@@ -1,41 +1,49 @@
-const http=require("http")
-const express=require("express");
-const app=express();
-const {Server}=require("socket.io");
-const cors=require("cors");
-const server=http.createServer(app);
-const clientOrigin="http://localhost:5173";
+const http = require("http");
 
-const io=new Server(server,{
-    cors:{
-        origin:clientOrigin,
-        methods:["GET","POST"],
-        credentials:true,
-    }
+const path = require("path");
+const express = require("express");
+const app = express();
+const { Server } = require("socket.io");
+const cors = require("cors");
+const server = http.createServer(app);
+const multer = require("multer");
+const upload = multer({ dest: 'uploads/' })
+
+
+// Middlewares
+app.use(cors());
+app.use(express.json());
+
+// View Engine
+app.set("view engine", "ejs");
+app.set("views", path.resolve("./views"));
+app.use(express.urlencoded({extended:false}));
+
+// Routes
+app.get("/", (req, res) => {
+    return res.render("homepage");
 });
 
-app.use(cors({
-        origin:clientOrigin,
-        methods:["GET","POST"],
-        credentials:true,
-    }));
-
-io.on("connection",(socket)=>{
-  console.log("User connection")
-  console.log("Id",socket.id)
-  socket.emit("welcome",`welcome to the server`)
-  socket.broadcast.emit("welcome",`Welcome to sever,${socket.id}`)
-  socket.on("message",(message)=>{
-    console.log("message Value",message);
-    socket.broadcast.emit("receive-message",message)
-  })
-  socket.on("disconnect",(reason)=>{
-    console.log("User disconnected", socket.id, reason)
-  })
+app.post('/upload',upload.single("profileimage"),(req,res)=>{
+  console.log(req.body);
+  console.log(req.file);
+  return res.redirect("/")
 })
 
-// app.get("/",(req,res)=>{
-//     res.send("value added");
-// })
 
-server.listen(8000,()=>console.log("Server Started"));
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, '/uploads')
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+    cb(null, file.fieldname + '-' + uniqueSuffix)
+  }
+})
+
+
+
+// Server
+server.listen(8000, () => {
+    console.log("Server Started on Port 8000");
+});
